@@ -23,6 +23,10 @@ public class BigBoid : MonoBehaviour
     public Vector3 arriveTarget;
     public float slowingDistance = 10;
 
+    public GameObject WaypointList;
+    public bool followPath;
+    public bool fleeEnabled;
+
 
     public void OnDrawGizmos()
     {
@@ -47,6 +51,37 @@ public class BigBoid : MonoBehaviour
     void Start()
     {
         
+    }
+
+    public void FollowPath()
+    {
+        if(followPath == true)
+        {
+            for(int i = 0; i <= 4; i++)
+            {
+                seekTarget = WaypointList.GetComponent<path>().Waypoints[i];
+                
+                arriveTarget = WaypointList.GetComponent<path>().Waypoints[i];
+               
+            }
+        }
+    }
+
+    public void Flee()
+    {
+        if (fleeEnabled)
+        {
+
+        }
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Flee"))
+        {
+            fleeEnabled = true;
+            seekEnabled = false;
+        }
     }
 
     public Vector3 Seek(Vector3 target)
@@ -89,6 +124,8 @@ public class BigBoid : MonoBehaviour
             f += Arrive(arriveTarget);
         }
 
+       
+
         return f;
     }
 
@@ -103,6 +140,8 @@ public class BigBoid : MonoBehaviour
         if (speed > 0)
         {
             transform.forward = velocity;
-        }        
+        }
+
+        FollowPath();
     }
 }
